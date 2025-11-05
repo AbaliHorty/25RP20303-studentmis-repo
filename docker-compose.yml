@@ -1,0 +1,36 @@
+ersion: '3.8'
+
+services:
+  group5_web:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - 25RP20303_db
+    volumes:
+      - ./src:/var/www/html
+
+  group5_db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: 25RP20303_shareride_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 25RP20303_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  group5_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: 25RP20303_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8081:80"
+    depends_on:
+      - 25RP20303_db
+
+volumes:
+  db_data:
